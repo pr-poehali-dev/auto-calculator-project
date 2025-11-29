@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
 import { toast } from 'sonner';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import { ChartContainer, ChartConfig } from '@/components/ui/chart';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 
 type TransactionType = 'income' | 'expense';
@@ -317,16 +317,12 @@ const Index = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="h-[300px]">
+              <ChartContainer config={{}} className="h-[300px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={chartData}>
                     <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
                     <XAxis dataKey="name" />
                     <YAxis />
-                    <ChartTooltip 
-                      content={<ChartTooltipContent />}
-                      formatter={(value: number) => value.toLocaleString('ru-RU', { style: 'currency', currency: 'RUB' })}
-                    />
                     <Bar dataKey="value" radius={[8, 8, 0, 0]}>
                       {chartData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={index === 0 ? COLORS.income : COLORS.expense} />
@@ -334,7 +330,7 @@ const Index = () => {
                     </Bar>
                   </BarChart>
                 </ResponsiveContainer>
-              </div>
+              </ChartContainer>
             </CardContent>
           </Card>
 
@@ -350,28 +346,26 @@ const Index = () => {
                 </TabsList>
                 <TabsContent value="expense" className="h-[250px]">
                   {categoryData.expense.length > 0 ? (
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={categoryData.expense}
-                          cx="50%"
-                          cy="50%"
-                          labelLine={false}
-                          label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                          outerRadius={80}
-                          fill={COLORS.expense}
-                          dataKey="value"
-                        >
-                          {categoryData.expense.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={`hsl(0 ${84 - index * 10}% ${60 - index * 5}%)`} />
-                          ))}
-                        </Pie>
-                        <ChartTooltip 
-                          content={<ChartTooltipContent />}
-                          formatter={(value: number) => value.toLocaleString('ru-RU', { style: 'currency', currency: 'RUB' })}
-                        />
-                      </PieChart>
-                    </ResponsiveContainer>
+                    <ChartContainer config={{}} className="h-full">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={categoryData.expense}
+                            cx="50%"
+                            cy="50%"
+                            labelLine={false}
+                            label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                            outerRadius={80}
+                            fill={COLORS.expense}
+                            dataKey="value"
+                          >
+                            {categoryData.expense.map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={`hsl(0 ${84 - index * 10}% ${60 - index * 5}%)`} />
+                            ))}
+                          </Pie>
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </ChartContainer>
                   ) : (
                     <div className="flex items-center justify-center h-full text-muted-foreground">
                       Нет данных
@@ -380,28 +374,26 @@ const Index = () => {
                 </TabsContent>
                 <TabsContent value="income" className="h-[250px]">
                   {categoryData.income.length > 0 ? (
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={categoryData.income}
-                          cx="50%"
-                          cy="50%"
-                          labelLine={false}
-                          label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                          outerRadius={80}
-                          fill={COLORS.income}
-                          dataKey="value"
-                        >
-                          {categoryData.income.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={`hsl(142 ${76 - index * 10}% ${36 + index * 5}%)`} />
-                          ))}
-                        </Pie>
-                        <ChartTooltip 
-                          content={<ChartTooltipContent />}
-                          formatter={(value: number) => value.toLocaleString('ru-RU', { style: 'currency', currency: 'RUB' })}
-                        />
-                      </PieChart>
-                    </ResponsiveContainer>
+                    <ChartContainer config={{}} className="h-full">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={categoryData.income}
+                            cx="50%"
+                            cy="50%"
+                            labelLine={false}
+                            label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                            outerRadius={80}
+                            fill={COLORS.income}
+                            dataKey="value"
+                          >
+                            {categoryData.income.map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={`hsl(142 ${76 - index * 10}% ${36 + index * 5}%)`} />
+                            ))}
+                          </Pie>
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </ChartContainer>
                   ) : (
                     <div className="flex items-center justify-center h-full text-muted-foreground">
                       Нет данных
